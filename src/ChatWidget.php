@@ -205,13 +205,16 @@ class ChatWidget extends Plugin
                         ->id($this->getSettings()['fileAgentPhotoChat'][0])
                         ->one();
 
-                    if( $asset_agent ){
-                        $url_image_agent = \Craft::$app->getRequest()->absoluteUrl.'admin/actions/assets/thumb?uid='.$asset_agent['uid'].'&width=144&height=144';
+                        if( $asset_agent ) {                            
+                            $url_image_agent = $asset_agent->getThumbUrl(144);
+                        } else {                        
 
-                    } else {
-
-                        $url_image_agent = \Craft::$app->getRequest()->absoluteUrl.'cpresources/8eecbbd7/img/agent.png';
-                    }
+                            $url_image_agent = \Craft::$app->assetManager->getPublishedUrl(
+                                '@brixplugins/chatwidget/assetbundles/settings/dist/img/agent.png',
+                                true
+                            );
+    
+                        }
 
                     if( $this->getSettings()->widgetType  == 'custom' ) {
 
@@ -220,13 +223,22 @@ class ChatWidget extends Plugin
                         ->one();
 
                         if( $asset_icon ) {
-                            $url_image_icon = \Craft::$app->getRequest()->absoluteUrl.'admin/actions/assets/thumb?uid='.$asset_icon['uid'].'&width=180&height=180';
+                            $url_image_icon = $asset_icon->getThumbUrl(180);
                         } else {
-                            $url_image_icon = \Craft::$app->getRequest()->absoluteUrl.'cpresources/2adebc1/img/'.$this->getSettings()->widgetType.'.svg';
+
+                            $url_image_icon = \Craft::$app->assetManager->getPublishedUrl(
+                                '@brixplugins/chatwidget/assetbundles/settings/dist/img/'.$this->getSettings()->widgetType.'.svg',
+                                true
+                            );
+                           
                         }
 
-                    } else {                        
-                        $url_image_icon = \Craft::$app->getRequest()->absoluteUrl.'cpresources/2adebc1/img/'.$this->getSettings()->widgetType.'.svg';
+                    } else {     
+
+                        $url_image_icon = \Craft::$app->assetManager->getPublishedUrl(
+                            '@brixplugins/chatwidget/assetbundles/settings/dist/img/'.$this->getSettings()->widgetType.'.svg',
+                            true
+                        );
                     }
                     
 
