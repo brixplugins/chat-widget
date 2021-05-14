@@ -1,0 +1,131 @@
+/**
+ * Chat Widget plugin for Craft CMS
+ *
+ * Chat Widget CSS
+ *
+ * @author    BRIX Plugins
+ * @copyright Copyright (c) 2021 BRIX Plugins
+ * @link      https://brixplugins.com
+ * @package   ChatWidget
+ * @since     1.0.0
+ */
+
+
+.brix-plugins__chat-widget_message {
+    position: fixed;
+    z-index: 9999;
+    bottom: 195px;
+    right: 40px;
+    width: 256px;
+    background: #FFFFFF;
+    border: 1px solid #F4F5F7;
+    box-sizing: border-box;
+    box-shadow: 0px 6px 18px rgba(17, 30, 45, 0.06);
+    border-radius: 12px;
+    padding: 27px 24px 24px;
+    display: none;
+}
+
+.brix-plugins__chat-widget_message h5 {
+    font-style: normal;
+    font-weight: bold;
+    font-size: 16px;
+    line-height: 10px;
+    margin-bottom: 12px;
+}
+
+.brix-plugins__chat-widget_message p {
+    font-style: normal;
+    font-weight: 450;
+    font-size: 14px;
+    line-height: 20px;
+}
+
+.brix-plugins__chat-widget_agent {
+    position: fixed;
+    z-index: 9999;
+    bottom: 195px;
+    right: 310px;
+    background: #E1EDFB;
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    display: none;
+}
+
+.brix-plugins__chat-widget_agent img {
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    filter: drop-shadow(0px 4px 14px rgba(36, 39, 41, 0.1));
+}
+
+.brix-plugins__chat-widget_button {
+    position: fixed;
+    z-index: 999;
+    bottom: 130px;
+    right: 40px;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 14px;
+    padding: 14px 20px;
+    width: 256px;
+    text-align: center;
+    border: none;
+    box-sizing: border-box;
+    box-shadow: 0px 6px 18px rgba(17, 30, 45, 0.08);
+    border-radius: 12px;
+    transition: transform .2s ease-in-out;
+    display: none;
+}
+
+.brix-plugins__chat-widget_button-facebook {
+    background: #416FFF;
+}
+
+.brix-plugins__chat-widget_button-whatsapp {
+    background: #27AB83;
+}
+
+.brix-plugins__chat-widget_button-telegram {
+    background: #30A8DB;
+}
+
+.brix-plugins__chat-widget_button-email {
+    background: #E94134;
+}
+
+.brix-plugins__chat-widget_button-custom {
+    background: #33404D;
+}
+
+.brix-plugins__chat-widget_button:hover {
+    text-decoration: none;
+    transform: scale(1.05);
+}
+
+.brix-plugins__chat-widget_icon {
+    position: fixed;
+    z-index: 9999;
+    bottom: 40px;
+    right: 40px;
+    transition: .2s ease-in-out;
+    cursor: pointer;
+    width: 60;
+    height: 60;
+}
+
+.brix-plugins__chat-widget_icon img {
+    -webkit-filter: drop-shadow(0px 2px 14px rgba(18, 140, 126, 0.2));
+    filter: drop-shadow(0px 2px 14px rgba(18, 140, 126, 0.2));
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+}
+
+
+.brix-plugins__chat-widget_icon:hover {
+    transform: scale(1.06);
+}
+
+ 

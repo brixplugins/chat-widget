@@ -1,0 +1,46 @@
+{
+    "name": "brixplugins/chat-widget",
+    "description": "Install an simple and easy to customize chat widget on your website",
+    "type": "craft-plugin",
+    "version": "1.0.0",
+    "keywords": [
+        "craft",
+        "cms",
+        "craftcms",
+        "craft-plugin",
+        "chat widget"
+    ],
+    "support": {
+        "docs": "https://github.com/brixplugins/chat-widget/chat-widget/blob/master/README.md",
+        "issues": "https://github.com/brixplugins/chat-widget/chat-widget/issues"
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Brix Plugins",
+            "homepage": "https://brixplugins.com/"
+        }
+    ],
+    "require": {
+        "craftcms/cms": "^3.0.0"
+    },
+    "require-dev": {
+      "craftcms/cms": "^3.2.0",
+      "codeception/codeception": "^3.0",
+      "vlucas/phpdotenv": "^3.0"
+    },
+    "autoload": {
+        "psr-4": {
+          "brixplugins\\chatwidget\\": "src/"
+        }
+    },
+    "extra": {
+        "name": "Chat Widget",
+        "handle": "chat-widget",
+        "developer": "Brix Plugins",
+        "developerUrl": "https://brixplugins.com/",
+        "documentationUrl": "https://github.com/brixplugins/chat-widget/chat-widget/blob/master/README.md",
+        "changelogUrl": "https://raw.githubusercontent.com/brixplugins/chat-widget/chat-widget/master/CHANGELOG.md",
+        "class": "brixplugins\\chatwidget\\ChatWidget"
+    }
+}

@@ -1,0 +1,646 @@
+{# @var craft \craft\web\twig\variables\CraftVariable #}
+{#
+/**
+ * Chat Widget plugin for Craft CMS 3.x
+ *
+ * Chat Widget Settings.twig
+ *
+ * @author    BRIX Plugins
+ * @copyright Copyright (c) 2021 BRIX Plugins
+ * @link      https://brixplugins.com
+ * @package   ChatWidget
+ * @since     1.0.0
+ */
+#}
+
+{% extends "_layouts/cp" %}
+{% import "_includes/forms" as forms %}
+
+{% set docsUrl = "https://brixplugins.com/plugins/chat-widget" %}
+
+{% set title = "Chat Widget" %}
+
+{% set pluginCpUrl = url('chat-widget') %}
+
+{% do view.registerAssetBundle("brixplugins\\chatwidget\\assetbundles\\chatwidget\\ChatWidgetAsset") %}
+{% do view.registerAssetBundle("brixplugins\\chatwidget\\assetbundles\\settings\\SettingsAsset") %}
+
+{% set tabs = {
+    general: { label: 'General', url: '#general' },
+    styling: { label: 'Styling', url: '#styling' },
+    schedule: { label: 'Schedule', url: '#schedule' },
+    sites: { label: 'Sites', url: '#sites' },
+    advanced: { label: 'Advanced', url: '#advanced' }
+} %}
+
+{% set logo = view.getAssetManager().getPublishedUrl('@brixplugins/chatwidget/assetbundles/settings/dist', true) ~ '/img/logo.svg' %}
+{% set mail_icon = view.getAssetManager().getPublishedUrl('@brixplugins/chatwidget/assetbundles/settings/dist', true) ~ '/img/mail-icon.svg' %}
+{% set icon_facebook = view.getAssetManager().getPublishedUrl('@brixplugins/chatwidget/assetbundles/settings/dist', true) ~ '/img/facebook.svg' %}
+{% set icon_whatsapp = view.getAssetManager().getPublishedUrl('@brixplugins/chatwidget/assetbundles/settings/dist', true) ~ '/img/whatsapp.svg' %}
+{% set icon_telegram = view.getAssetManager().getPublishedUrl('@brixplugins/chatwidget/assetbundles/settings/dist', true) ~ '/img/telegram.svg' %}
+{% set icon_email = view.getAssetManager().getPublishedUrl('@brixplugins/chatwidget/assetbundles/settings/dist', true) ~ '/img/email.svg' %}
+{% set icon_custom = view.getAssetManager().getPublishedUrl('@brixplugins/chatwidget/assetbundles/settings/dist', true) ~ '/img/custom.svg' %}
+
+{% set optType1 = false %}
+{% set optType2 = false %}
+{% set optType3 = false %}
+{% set optType4 = false %}
+{% set optType5 = false %}
+
+{% if settings['widgetType'] == 'facebook' %}
+    {% set optType1 = true %}
+{% elseif settings['widgetType'] == 'whatsapp' %}
+    {% set optType2 = true %}
+{% elseif settings['widgetType'] == 'telegram' %}
+    {% set optType3 = true %}
+{% elseif settings['widgetType'] == 'email' %}
+    {% set optType4 = true %}
+{% elseif settings['widgetType'] == 'custom' %}
+    {% set optType5= true %}
+{% endif %}
+
+{% set activePages = settings['txtActivePages'] | split(',') %}
+
+
+
+{# ------------------------------------------ Details --------------------------------------- #}
+
+{% set details %}
+
+    <div class="content-pane newsletter-pane text-center">
+    
+        <img src="{{ mail_icon }}" width="140.4" />
+
+        <h1 class="newsletter-title">
+            Want to stay updated 
+            about new Great plugins?
+        </h1>
+
+        <p class="developer-description">
+            Subscribe to our newsletter today!
+        </p>
+
+        <div id="mc_embed_signup">
+            <form action="https://brixplugins.us1.list-manage.com/subscribe/post?u=1a294d91a09badfa01199d560&amp;id=63e5239b4a" method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" class="validate" target="_blank" novalidate>
+                <div id="mc_embed_signup_scroll">                    
+                    <div class="mc-field-group">
+                        <input type="email" value="" name="EMAIL" class="required email text fullwidth" id="mce-EMAIL" placeholder="example@email.com">
+                    </div>
+                    <div id="mce-responses" class="clear">
+                        <div class="response" id="mce-error-response" style="display:none"></div>
+                        <div class="response" id="mce-success-response" style="display:none"></div>
+                    </div>
+                    <div style="position: absolute; left: -5000px;" aria-hidden="true">
+                        <input type="text" name="b_1a294d91a09badfa01199d560_63e5239b4a" tabindex="-1" value="">
+                    </div>
+                    <button type="submit" value="Subscribe" name="subscribe" id="mc-embedded-subscribe" class="button btn submit">Subscribe</button>
+               
+                </div>
+            </form>
+        </div>
+    
+    </div>
+
+    <div class="content-pane developer-content-pane text-center mt-2">
+        <h2>
+            A plugin by
+        </h2>
+        <a href="https://brixplugins.com">
+            <img class="brix-logo-developer" src="{{ logo }}" width="200" />
+        </a>
+        <p class="developer-description">
+            The best CraftCMS Tips,
+            Tutorials, Resources and more!
+        </p>
+    </div>
+
+{% endset %}
+
+{# -------------------------------------- /Details ----------------------------------- #}
+
+
+{% set content %}
+
+
+    <form id="main-form" method="post" accept-charset="UTF-8" novalidate="" data-saveshortcut="" data-confirm-unload="">
+
+        {{- csrfInput() }}
+
+        {{ forms.hidden({
+            name: 'action',
+            value: 'plugins/save-plugin-settings'})
+        }}
+        
+        {{ forms.hidden({
+            name: 'pluginHandle',
+            value: 'chat-widget'})
+        }}  
+
+        <div class="chat-widget__enable-toggle">
+            {{ 
+                forms.lightswitchField({
+                offLabel: 'Activate / Deactivate chat widget'|t('chat-widget'),
+                id: 'settings[enablePlugin]',
+                name: 'settings[enablePlugin]',
+                on: settings['enablePlugin'] })
+            }}
+        </div>
+
+        <br>
+
+        {% if not settings['enablePlugin'] %}
+            <p class="warning with-icon">The plugin is currently disabled.</p>
+        {% endif %}
+
+
+        <div id="general">
+
+            <div class="field">
+
+                <div class="heading" >
+                    <label class="heading-widget-type">
+                        Choose the icon for your chat widget
+                    </label>
+                </div> 
+
+                <div class="elements-button-type__items">
+
+                    <div class="elements-button-type__item">
+                        <label for="facebook">
+                            <img class="mr-3" src="{{ icon_facebook }}" />   
+                        </label>    
+                        <br/>
+                        {{ forms.radio({
+                            label: 'Messenger'|t('chat-widget'),
+                            id: 'facebook',
+                            name: 'settings[widgetType]',
+                            value: 'facebook',
+                            checked: optType1
+                        }) }}                
+                    </div>
+
+                    <div class="elements-button-type__item">
+                        <label for="whatsapp">
+                            <img class="mr-3" src="{{ icon_whatsapp }}" />
+                        </label>
+                        <br/>
+                        {{ forms.radio({
+                            label: 'WhatsApp'|t('chat-widget'),
+                            id: 'whatsapp',
+                            name: 'settings[widgetType]',
+                            value: 'whatsapp',
+                            checked: optType2
+                        }) }}
+                    </div>
+
+                    <div class="elements-button-type__item">
+                        <label for="telegram">
+                            <img class="mr-3" src="{{ icon_telegram }}" />
+                        </label>
+                        <br/>
+                        {{ forms.radio({
+                            label: 'Telegram'|t('chat-widget'),
+                            id: 'telegram',
+                            name: 'settings[widgetType]',
+                            value: 'telegram',
+                            checked: optType3
+                        }) }}
+                    </div>
+                    
+                    <div class="elements-button-type__item">
+                        <label for="email">
+                            <img class="mr-3" src="{{ icon_email }}" />
+                        </label>
+                        <br/>
+                        {{ forms.radio({
+                            label: 'Email'|t('chat-widget'),
+                            id: 'email',
+                            name: 'settings[widgetType]',
+                            value: 'email',
+                            checked: optType4
+                        }) }}
+                    </div>
+
+                    <div class="elements-button-type__item">
+                        <label for="custom">
+                            <img class="mr-3" src="{{ icon_custom }}" />
+                        </label>
+                        <br/>
+                        {{ forms.radio({
+                            label: 'Custom'|t('chat-widget'),
+                            id: 'custom',
+                            name: 'settings[widgetType]',
+                            value: 'custom',
+                            checked: optType5
+                        }) }}
+                    </div>
+
+                </div>
+
+
+                <div class="heading">
+                    <label class="heading-widget-type mt-5">
+                        Chat widget content
+                    </label>
+                </div> 
+
+                {{ forms.textField({
+                    label: 'Main heading'|t('chat-widget'),
+                    instructions: '20 - 30 characters recommended'|t('chat-widget'),
+                    id: 'settings[txtMainHading]',
+                    name: 'settings[txtMainHading]',
+                    maxlength: 100,
+                    placeholder: 'Welcome to our website!'|t('chat-widget'),
+                    value: settings['txtMainHading']})
+                }}
+
+                {{ forms.textField({
+                    label: 'Chat widget message'|t('chat-widget'),
+                    instructions: '60 - 100 characters recommended'|t('chat-widget'),
+                    id: 'settings[txtMessage]',
+                    name: 'settings[txtMessage]',
+                    placeholder: 'Nice to meet you! If you have any question about our services, feel free to contact us.'|t('chat-widget'),
+                    value: settings['txtMessage']})
+                }}
+
+                {{ forms.textField({
+                    label: 'Button Text'|t('chat-widget'),
+                    instructions: '5 - 25 characters recommended'|t('chat-widget'),
+                    id: 'settings[txtButton]',
+                    name: 'settings[txtButton]',
+                    maxlength: 50,
+                    placeholder: 'Nice to meet you! If you have any question about our services, feel free to contact us.'|t('chat-widget'),
+                    value: settings['txtButton']})
+                }}
+
+                {{ forms.textField({
+                    label: 'Button Link'|t('chat-widget'),
+                    instructions: 'Example: `https://api.whatsapp.com/send?phone=11234567890`'|t('chat-widget'),
+                    id: 'settings[txtButtonLink]',
+                    name: 'settings[txtButtonLink]',
+                    value: settings['txtButtonLink']})
+                }}
+
+            </div>
+
+        </div>
+
+        <div id="styling" class="hidden">
+
+            {{ forms.colorField({
+                label: 'Main heading color'|t('chat-widget'),
+                name: 'settings[colorMainHeading]',
+                value: settings['colorMainHeading'],
+            }) }}
+
+            {{ forms.colorField({
+                label: 'Message text color'|t('chat-widget'),
+                name: 'settings[colorTextMessage]',
+                value: settings['colorTextMessage'],
+            }) }}
+
+            {{ forms.colorField({
+                label: 'Button text color'|t('chat-widget'),
+                name: 'settings[colorTextButton]',
+                value: settings['colorTextButton'],
+            }) }}
+
+            {{ forms.colorField({
+                label: 'Button background color'|t('chat-widget'),
+                name: 'settings[colorBackgroundBtn]',
+                value: settings['colorBackgroundBtn'],
+            }) }}
+
+            {{ forms.field({ 
+                label: "Chat agent photo", 
+                instructions: '144 x 144 px Recommended.'|t('chat-widget')}, 
+                include('_includes/forms/elementSelect', 
+                fileAgentPhotoChatSelectConfig )) 
+            }}
+
+            {{ forms.field({ 
+                label: "Custom chat widget icon", 
+                instructions: '180 x 180 px Recommended.'|t('chat-widget')}, 
+                include('_includes/forms/elementSelect', 
+                fileCustomIconChatSelectConfig )) 
+            }}
+
+
+
+        </div>
+
+
+        <div id="schedule" class="hidden">      
+
+            <div class="field">
+                <div class="heading">
+                    <label class="heading-widget-type">
+                        Timezone
+                    </label>
+                </div>   
+                <div class="instructions">
+                    <p>
+                        The time on <strong>TIMEZONE</strong> is <strong>{{ now|date(' Y-m-d, H:i:s') }}.</strong>
+                        <span class="info">Time zone is changed from CraftCMS general settings</span>
+                    </p>                    
+                </div>   
+                
+            </div>   
+
+            <div id="time858271014-field" class="field mt-4">                
+                <div class="heading">
+                    <label id="time858271014-label" for="time858271014">Schedule for your Chat Widget</label>                                    
+                </div>
+                <div id="time858271014-instructions" class="instructions"><p>Choose the range of hours you want the chat widget to be displayed.</p></div>
+
+                <div class="bp-time-group">
+
+                
+                {{ forms.selectField({
+                    name: 'settings[timeFrom]',
+                    options: {
+                        '00:00': '00:00','00:30': '00:30','1:00': '1:00','1:30': '1:30','2:00': '2:00','2:30': '2:30','3:00': '3:00','3:30': '3:30','4:00': '4:00','4:30': '4:30',
+                        '5:00': '5:00','5:30': '5:30','6:00': '6:00','6:30': '6:30','7:00': '7:00','7:30': '7:30','8:00': '8:00','8:30': '8:30','9:00': '9:00','9:30': '9:30',
+                        '10:00': '10:00','10:30': '10:30','11:00': '11:00','11:30': '11:30','12:00': '12:00','12:30': '12:30','13:00': '13:00','13:30': '13:30','14:00': '14:00',
+                        '14:30': '14:30','15:00': '15:00','15:30': '15:30','16:00': '16:00','16:30': '16:30','17:00': '17:00','17:30': '17:30','18:00': '18:00','18:30': '18:30',
+                        '19:00': '19:00','19:30': '19:30','20:00': '20:00','21:30': '21:30','22:00': '22:00','22:30': '22:30','23:00': '23:00','23:30': '23:30','24:00': '24:00',
+                        '24:30': '24:30'                
+                    },
+                    value: settings['timeFrom'],
+                }) }}
+
+                <div class="ml-1 mr-1">
+                    to
+                </div>
+
+                
+                {{ forms.selectField({
+                    name: 'settings[timeTo]',
+                    options: {
+                        '00:00': '00:00','00:30': '00:30','1:00': '1:00','1:30': '1:30','2:00': '2:00','2:30': '2:30','3:00': '3:00','3:30': '3:30','4:00': '4:00','4:30': '4:30',
+                        '5:00': '5:00','5:30': '5:30','6:00': '6:00','6:30': '6:30','7:00': '7:00','7:30': '7:30','8:00': '8:00','8:30': '8:30','9:00': '9:00','9:30': '9:30',
+                        '10:00': '10:00','10:30': '10:30','11:00': '11:00','11:30': '11:30','12:00': '12:00','12:30': '12:30','13:00': '13:00','13:30': '13:30','14:00': '14:00',
+                        '14:30': '14:30','15:00': '15:00','15:30': '15:30','16:00': '16:00','16:30': '16:30','17:00': '17:00','17:30': '17:30','18:00': '18:00','18:30': '18:30',
+                        '19:00': '19:00','19:30': '19:30','20:00': '20:00','21:30': '21:30','22:00': '22:00','22:30': '22:30','23:00': '23:00','23:30': '23:30','24:00': '24:00',
+                        '24:30': '24:30'                
+                    },
+                    value: settings['timeTo'],
+                }) }}
+
+      
+                </div>    
+
+            </div>
+           
+
+            <div class="field mt-4">                
+                <div class="heading">
+                    <label id="time554421301-label" for="time554421301">Work days</label>                                    
+                </div>
+                <div class="instructions">
+                    <p>Choose the days you want the chat widget to show.</p>
+                </div>
+            </div>
+
+            <div class="monday__enable-toggle chat-widget__enable-toggle">
+                {{ 
+                    forms.lightswitchField({
+                    onLabel: 'Monday'|t('chat-widget'),
+                    name: 'settings[activeDay1]',
+                    on: settings['activeDay1'] })
+                }}
+                {{ 
+                    forms.lightswitchField({
+                    onLabel: 'Tuesday'|t('chat-widget'),        
+                    name: 'settings[activeDay2]',
+                    on: settings['activeDay2'] })
+                }}
+                {{ 
+                    forms.lightswitchField({
+                    onLabel: 'Wednesday'|t('chat-widget'),
+                    name: 'settings[activeDay3]',
+                    on: settings['activeDay3'] })
+                }}
+                {{ 
+                    forms.lightswitchField({
+                    onLabel: 'Thursday'|t('chat-widget'),
+                    name: 'settings[activeDay4]',
+                    on: settings['activeDay4'] })
+                }}
+                {{ 
+                    forms.lightswitchField({
+                    onLabel: 'Friday'|t('chat-widget'),
+                    name: 'settings[activeDay5]',
+                    on: settings['activeDay5'] })
+                }}
+                {{ 
+                    forms.lightswitchField({
+                    onLabel: 'Saturday'|t('chat-widget'),
+                    name: 'settings[activeDay6]',
+                    on: settings['activeDay6'] })
+                }}
+                {{ 
+                    forms.lightswitchField({
+                    onLabel: 'Sunday'|t('chat-widget'),
+                    name: 'settings[activeDay0]',
+                    on: settings['activeDay0'] })
+                }}
+
+            </div>
+
+
+        </div>
+
+
+        <div id="sites" class="hidden">
+
+            <h1>Choose on which sites you would like to show your Chat Widget</h1>
+
+            <div class="chat-widget__css-enable-toggle">
+                {{ forms.lightswitchField({                    
+                    onLabel: 'Custom sites'|t('chat-widget'),
+                    id: 'settings[disableAllSites]',
+                    name: 'settings[disableAllSites]',
+                    on: settings['disableAllSites'] })
+                }}
+            </div>
+
+            {% set sites = craft.app.sites.getAllSites() %}        
+
+            <h2 class="mt-4">
+                Sites
+            </h2>    
+            
+            <table class="data fullwidth collapsible mt-2">
+                <thead>
+                     <tr>
+                        <th>ID</th>
+                        <th>Site name</th>
+                        <th>Enable</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for site in sites %}
+
+                        {% set enable_lightswitch = false %}
+
+                        {% for activePage in activePages %}
+                            {% if site.id == activePage %}
+                                {% set enable_lightswitch = true %}
+                            {% endif %}
+                        {% endfor %}  
+
+                        <tr>
+                            <th>{{ site.id }}</th>
+                            <td>{{ site.name }}</td>
+                            <td>
+                                <div class="pages-lightswitch">
+                                    {{ forms.lightswitchField({
+                                        id: site.id,
+                                        value: site.id,
+                                        name: 'txtActivePages',
+                                        on: enable_lightswitch })
+                                    }}
+                                </div>
+                            </td>
+                        </tr>
+                        
+                    {% endfor %}          
+                </tbody>
+            </table>
+
+            {{ forms.hidden({
+                id: 'activePages',
+                name: 'settings[txtActivePages]',
+                value: settings['txtActivePages'] })
+            }}
+
+        </div>
+
+        <div id="advanced" class="hidden">
+
+
+            {{ forms.selectField({
+                label: 'Choose your website timezone to sync your chat widget time range.'|t('chat-widget'),
+                instructions: 'Please choose how much time you would like to wait before showing the chat widget.',
+                name: 'settings[delayPlugin]',
+                options: {
+                    400: 'Instant',
+                    2000: '2 Seconds',
+                    5000: '5 Seconds',
+                    10000: '10 Seconds',
+                    20000: '20 Seconds',
+                    30000: '30 Seconds',
+                    60000: '1 Minute'
+                },
+                value: settings['delayPlugin'],
+            }) }}
+
+
+            <div class="chat-widget__css-enable-toggle">
+                {{ forms.lightswitchField({
+                    onLabel: 'Activate on mobile & tablet'|t('chat-widget'),
+                    id: 'settings[enableOnMobile]',
+                    name: 'settings[enableOnMobile]',
+                    on: settings['enableOnMobile'] })
+                }}
+            </div>
+
+
+
+            <div class="chat-widget__css-enable-toggle mt-2">
+                {{ forms.lightswitchField({
+                    onLabel: 'Custom CSS'|t('chat-widget'),
+                    id: 'settings[enableCustomCSS]',
+                    name: 'settings[enableCustomCSS]',
+                    on: settings['enableCustomCSS'] })
+                }}
+            </div>
+
+
+
+            <div class="form-custom-css">
+                {{ forms.textareaField({
+                    instructions: 'Need extra customization for your chat widget? Toggle the Custom CSS option.'|t('chat-widget'),
+                     id: 'settings[txtAreaCustomCSS]',
+                    name: 'settings[txtAreaCustomCSS]',
+                    max: 140,
+                    value: settings['txtAreaCustomCSS'],
+                    disabled: not settings['enableCustomCSS'],
+                    rows: 5,
+                }) }}
+            </div>
+
+
+        </div>
+        
+
+
+
+
+        <button type="submit" class="btn submit mt-5">Save Changes</button>
+
+    </form>
+
+
+{% endset %}
+
+
+
+{# -------------------------------------- Javascript -------------------------------------- #}
+
+
+
+{% js on ready %}
+
+
+    document.getElementById('settings[enableCustomCSS]').addEventListener('click', function() {
+        
+        if(this.getAttribute("aria-checked") === 'true' ){ 
+            document.getElementById('settings[txtAreaCustomCSS]').disabled = false;
+            document.getElementById('settings[txtAreaCustomCSS]').classList.remove("disabled");
+            
+        } else {
+            document.getElementById('settings[txtAreaCustomCSS]').disabled = true;
+            document.getElementById('settings[txtAreaCustomCSS]').classList.add("disabled");
+        }
+                    
+    });
+
+
+    var pages = [];
+
+    document.querySelectorAll('.pages-lightswitch .lightswitch-field button').forEach(function(element) {
+         
+        if(element.getAttribute("aria-checked") === 'true' ){                      
+            pages.push(element.id);
+        }
+
+        element.addEventListener('click', function() {
+                        
+            if(this.getAttribute("aria-checked") === 'true' ){     
+                pages.indexOf(this.id) === -1 ? pages.push(this.id) : console.log("This item already exists");
+            } else {
+
+                const index = pages.indexOf(this.id);
+                
+                if (index > -1) {
+                    pages.splice(index, 1);
+                }
+                            
+            }
+                        
+            document.getElementById("activePages").value = pages.toString();
+
+        });
+  
+    });           
+
+    document.getElementById("activePages").value = pages.toString();
+
+    
+                
+{% endjs %}
+
+
+{# -------------------------------------- /Javascript -------------------------------------- #}
