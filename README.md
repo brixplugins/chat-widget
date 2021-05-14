@@ -2,7 +2,7 @@
 
 Install an simple and easy to customize chat widget on your website
 
-![Screenshot](resources/img/plugin-logo.png)
+![Screenshot](resources/img/chat-widget-preview.svg)
 
 ## Requirements
 
