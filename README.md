@@ -27,10 +27,4 @@ To install the plugin, follow these instructions.
 [Chat Widget Docs](https://brixplugins.com/plugins/chat-widget)
 
 
-## Chat Widget Roadmap
-
-Some things to do, and ideas for potential features:
-
-* Release it
-
 Brought to you by [Brix Plugins](https://brixplugins.com/)
