@@ -47,7 +47,7 @@ class ChatWidgetAsset extends AssetBundle
 
         // define the dependencies
         $this->depends = [
-            CpAsset::class,
+            'yii\web\JqueryAsset',
         ];
 
         // define the relative path to CSS/JS files that should be registered with the page

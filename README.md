@@ -6,7 +6,7 @@ Install an simple and easy to customize chat widget on your website
 
 ## Requirements
 
-This plugin requires Craft CMS 3.0.0-beta.23 or later.
+This plugin requires Craft CMS 3.0.0 or later.
 
 ## Installation
 
@@ -18,21 +18,14 @@ To install the plugin, follow these instructions.
 
 2. Then tell Composer to load the plugin:
 
-        composer require brixplugins/chat-widget/chat-widget
+        composer require brixplugins/chat-widget
 
 3. In the Control Panel, go to Settings → Plugins and click the “Install” button for Chat Widget.
 
 ## Chat Widget Overview
 
--Insert text here-
+[Chat Widget Docs](https://brixplugins.com/plugins/chat-widget)
 
-## Configuring Chat Widget
-
--Insert text here-
-
-## Using Chat Widget
-
--Insert text here-
 
 ## Chat Widget Roadmap
 

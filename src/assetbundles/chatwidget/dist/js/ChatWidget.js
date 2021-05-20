@@ -56,15 +56,15 @@ jQuery(document).ready(function() {
 
     $('#bp-chat-widget-icon').attr('data-click-state', 1);
 
-    $( "#bp-chat-widget-button" ).show(250);
+    $( "#bp-chat-widget-button" ).show(200);
 
     setTimeout(function() {
-        $( "#bp-chat-widget-message" ).show(250); 
-    }, 180);
+        $( "#bp-chat-widget-message" ).show(200); 
+    }, 140);
 
     setTimeout(function() {
-        $( "#bp-chat-widget-agent" ).show(200); 
-    }, 360);
+        $( "#bp-chat-widget-agent" ).show(150); 
+    }, 320);
 
   }
 

@@ -82,16 +82,6 @@ class ChatWidget extends Plugin
         self::$plugin = $this;
 
 
-        // Do something after we're installed
-        Event::on(
-            Plugins::class,
-            Plugins::EVENT_AFTER_INSTALL_PLUGIN,
-            function (PluginEvent $event) {
-                if ($event->plugin === $this) {
-                    // We were just installed
-                }
-            }
-        );
 
         Event::on(
             Cp::class,
@@ -121,12 +111,53 @@ class ChatWidget extends Plugin
             $site_active = true;
         }
 
+   
+                                            
+        $active_days = [];
+
+        if( $this->getSettings()->activeDay1 ) {
+            $active_days[] = 1;
+        }
+
+        if( $this->getSettings()->activeDay2 ) {
+            $active_days[] = 2;
+        }
+
+        if( $this->getSettings()->activeDay3 ) {
+            $active_days[] = 3;
+        }
+
+        if( $this->getSettings()->activeDay4 ) {
+            $active_days[] = 4;
+        }
+
+        if( $this->getSettings()->activeDay5 ) {
+            $active_days[] = 5;
+        }
+
+        if( $this->getSettings()->activeDay6 ) {
+            $active_days[] = 6;
+        }
+
+        if( $this->getSettings()->activeDay0 ) {
+            $active_days[] = 0;
+        }
+
+        if(in_array(date("w"), $active_days)) {
+            if (time() >= strtotime($this->getSettings()->timeFrom.':00') AND time() <= strtotime($this->getSettings()->timeTo.':00')) {
+            
+            } else {
+                $site_active = false;
+            }
+        } else {
+            $site_active = false;
+        }
+
         
         if( $site_active AND $this->getSettings()->enablePlugin AND !strpos($_SERVER['REQUEST_URI'], '/'.craft\helpers\App::env('CP_TRIGGER') ?: 'admin') ) {
             
 
             \Craft::$app->view->registerAssetBundle('brixplugins\\chatwidget\\assetbundles\\chatwidget\\ChatWidgetAsset');
-
 
             \Craft::$app->view->registerCss( '.brix-plugins__chat-widget_button { color: #'.$this->getSettings()->colorTextButton.'; } .brix-plugins__chat-widget_message h5 { color: #'.$this->getSettings()->colorMainHeading.'; }.brix-plugins__chat-widget_message p { color: #'.$this->getSettings()->colorTextMessage.'; }' );
 
@@ -156,80 +187,33 @@ class ChatWidget extends Plugin
                     }
 
 
-                    if( $plugin_state == 0 ) {
-                                            
-                        $active_days = [];
+                    if( $this->getSettings()->urlAgentPhotoChat ) { 
 
-                        if( $this->getSettings()->activeDay1 ) {
-                            $active_days[] = 1;
-                        }
+                        $url_image_agent = $this->getSettings()->urlAgentPhotoChat;
 
-                        if( $this->getSettings()->activeDay2 ) {
-                            $active_days[] = 2;
-                        }
+                    } else {       
+                        
+                        $url_image_agent = \Craft::$app->assetManager->getPublishedUrl(
+                            '@brixplugins/chatwidget/assetbundles/settings/dist/img',
+                            true,
+                            'agent.png'
+                        );
 
-                        if( $this->getSettings()->activeDay3 ) {
-                            $active_days[] = 3;
-                        }
-
-                        if( $this->getSettings()->activeDay4 ) {
-                            $active_days[] = 4;
-                        }
-
-                        if( $this->getSettings()->activeDay5 ) {
-                            $active_days[] = 5;
-                        }
-
-                        if( $this->getSettings()->activeDay6 ) {
-                            $active_days[] = 6;
-                        }
-
-                        if( $this->getSettings()->activeDay0 ) {
-                            $active_days[] = 0;
-                        }
-
-                        if(in_array(date("w"), $active_days)) {
-                            if (time() >= strtotime($this->getSettings()->timeFrom.':00') AND time() <= strtotime($this->getSettings()->timeTo.':00')) {
-                            
-                            } else {
-                                $plugin_state = 1;
-                            }
-                        } else {
-                            $plugin_state = 1;
-                        }
 
                     }
 
-
-                    $asset_agent = \craft\elements\Asset::find()
-                        ->id($this->getSettings()['fileAgentPhotoChat'][0])
-                        ->one();
-
-                        if( $asset_agent ) {                            
-                            $url_image_agent = $asset_agent->getThumbUrl(144);
-                        } else {                        
-
-                            $url_image_agent = \Craft::$app->assetManager->getPublishedUrl(
-                                '@brixplugins/chatwidget/assetbundles/settings/dist/img/agent.png',
-                                true
-                            );
-    
-                        }
-
+                    
                     if( $this->getSettings()->widgetType  == 'custom' ) {
-
-                        $asset_icon = \craft\elements\Asset::find()
-                        ->id($this->getSettings()['fileChatIcon'][0])
-                        ->one();
-
-                        if( $asset_icon ) {
-                            $url_image_icon = $asset_icon->getThumbUrl(180);
+                   
+                        if( $this->getSettings()->urlIconChat ) {
+                            $url_image_icon = $this->getSettings()->urlIconChat;
                         } else {
 
                             $url_image_icon = \Craft::$app->assetManager->getPublishedUrl(
-                                '@brixplugins/chatwidget/assetbundles/settings/dist/img/'.$this->getSettings()->widgetType.'.svg',
-                                true
-                            );
+                                '@brixplugins/chatwidget/assetbundles/settings/dist/img',
+                                true,
+                                $this->getSettings()->widgetType.'.svg'
+                            );                
                            
                         }
 
@@ -243,29 +227,28 @@ class ChatWidget extends Plugin
                     
 
                     echo '
-                    <div id="bp-chat-widget" class="brix-plugins__chat-widget" data-delay="'.$this->getSettings()->delayPlugin.'" data-inactive="'.$plugin_state.'"> 
+                        <div id="bp-chat-widget" class="brix-plugins__chat-widget" data-delay="'.$this->getSettings()->delayPlugin.'" data-inactive="'.$plugin_state.'"> 
 
-                        <div id="bp-chat-widget-message" class="brix-plugins__chat-widget_message">                    
-                            <h5>'.$this->getSettings()->txtMainHading.'</h5>
-                            <p>'.$this->getSettings()->txtMessage.'</p>
-                        </div>
+                            <div id="bp-chat-widget-message" class="brix-plugins__chat-widget_message">                    
+                                <h5>'.$this->getSettings()->txtMainHading.'</h5>
+                                <p>'.$this->getSettings()->txtMessage.'</p>
+                            </div>
 
-                        <div id="bp-chat-widget-agent" class="brix-plugins__chat-widget_agent">                    
-                            <img src="'.$url_image_agent.'" alt="Chat Widget Agent">
+                            <div id="bp-chat-widget-agent" class="brix-plugins__chat-widget_agent">                    
+                                <img src="'.$url_image_agent.'" alt="Chat Widget Agent">
+                            </div>
+                            <a href="'.$this->getSettings()->txtButtonLink.'" target="_blank" id="bp-chat-widget-button" class="brix-plugins__chat-widget_button brix-plugins__chat-widget_button-'.$this->getSettings()->widgetType.'">
+                            '.$this->getSettings()->txtButton.'
+                            </a>
+                            <div id="bp-chat-widget-icon" class="brix-plugins__chat-widget_icon" data-click-state="0" >
+                                <img src="'.$url_image_icon.'" alt="Chat Widget Icon">
+                            </div>
                         </div>
-                        <a href="'.$this->getSettings()->txtButtonLink.'" target="_blank" id="bp-chat-widget-button" class="brix-plugins__chat-widget_button brix-plugins__chat-widget_button-'.$this->getSettings()->widgetType.'">
-                        '.$this->getSettings()->txtButton.'
-                        </a>
-                        <div id="bp-chat-widget-icon" class="brix-plugins__chat-widget_icon" data-click-state="0" >
-                            <img src="'.$url_image_icon.'" alt="Chat Widget Icon">
-                        </div>
-                    </div>
                     ';
                 }
             );
 
         }
-
 
         Craft::info(
             Craft::t(
@@ -300,30 +283,7 @@ class ChatWidget extends Plugin
             ->controller
             ->renderTemplate('chat-widget/settings',
             [
-                'settings' => $this->getSettings(),
-                'fileAgentPhotoChatSelectConfig' => array(
-                    'id'                 => 'fileAgentPhotoChat',
-                    'name'               => 'settings[fileAgentPhotoChat]',
-                    'jsClass'            => 'Craft.AssetSelectInput',
-                    'elementType'        => 'craft\\elements\\Asset',
-                    'elements'           => $this->getSettings()['fileAgentPhotoChat'] && count($this->getSettings()['fileAgentPhotoChat']) ? [Craft::$app->getElements()->getElementById($this->getSettings()['fileAgentPhotoChat'][0])] : null,
-                    'criteria'           => array('kind' => array('image')),
-                    'limit'              => 1,
-                    'viewMode'           => 'table',
-                    'selectionLabel'     => Craft::t('chat-widget','Choose a picture'),
-                ),
-                'fileCustomIconChatSelectConfig' => array(
-                    'id'                 => 'fileChatIcon',
-                    'name'               => 'settings[fileChatIcon]',
-                    'jsClass'            => 'Craft.AssetSelectInput',
-                    'elementType'        => 'craft\\elements\\Asset',
-                    'elements'           => $this->getSettings()['fileChatIcon'] && count($this->getSettings()['fileChatIcon']) ? [Craft::$app->getElements()->getElementById($this->getSettings()['fileChatIcon'][0])] : null,
-                    'criteria'           => array('kind' => array('image')),
-                    'limit'              => 1,
-                    'viewMode'           => 'table',
-                    'selectionLabel'     => Craft::t('chat-widget','Choose an icon'),
-               )
-               
+                'settings' => $this->getSettings()
             ]
         );
     }

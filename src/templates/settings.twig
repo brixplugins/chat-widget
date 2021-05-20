@@ -22,7 +22,6 @@
 
 {% set pluginCpUrl = url('chat-widget') %}
 
-{% do view.registerAssetBundle("brixplugins\\chatwidget\\assetbundles\\chatwidget\\ChatWidgetAsset") %}
 {% do view.registerAssetBundle("brixplugins\\chatwidget\\assetbundles\\settings\\SettingsAsset") %}
 
 {% set tabs = {
@@ -116,10 +115,12 @@
 
 {% endset %}
 
+
 {# -------------------------------------- /Details ----------------------------------- #}
 
 
 {% set content %}
+
 
 
     <form id="main-form" method="post" accept-charset="UTF-8" novalidate="" data-saveshortcut="" data-confirm-unload="">
@@ -311,20 +312,21 @@
                 value: settings['colorBackgroundBtn'],
             }) }}
 
-            {{ forms.field({ 
-                label: "Chat agent photo", 
-                instructions: '144 x 144 px Recommended.'|t('chat-widget')}, 
-                include('_includes/forms/elementSelect', 
-                fileAgentPhotoChatSelectConfig )) 
+            {{ forms.textField({
+                label: 'Chat agent photo'|t('chat-widget'),
+                instructions: 'Recommended size is 144 x 144px. Please upload the image to Imgur and add the link below ( ex. https://i.imgur.com/NAGTvvz.png )'|t('chat-widget'),
+                id: 'settings[urlAgentPhotoChat]',
+                name: 'settings[urlAgentPhotoChat]',
+                value: settings['urlAgentPhotoChat']})
             }}
 
-            {{ forms.field({ 
-                label: "Custom chat widget icon", 
-                instructions: '180 x 180 px Recommended.'|t('chat-widget')}, 
-                include('_includes/forms/elementSelect', 
-                fileCustomIconChatSelectConfig )) 
+            {{ forms.textField({
+                label: 'Custom chat widget icon'|t('chat-widget'),
+                instructions: 'Recommended size is 180 x 180px. Please upload the image to Imgur and add the link below ( ex. https://i.imgur.com/mg8oOzZ.png )'|t('chat-widget'),
+                id: 'settings[urlIconChat]',
+                name: 'settings[urlIconChat]',
+                value: settings['urlIconChat']})
             }}
-
 
 
         </div>
@@ -340,7 +342,7 @@
                 </div>   
                 <div class="instructions">
                     <p>
-                        The time on <strong>TIMEZONE</strong> is <strong>{{ now|date(' Y-m-d, H:i:s') }}.</strong>
+                        The current website <strong>TIMEZONE</strong> is <strong>{{ now|date(' Y-m-d, H:i:s') }}.</strong>
                         <span class="info">Time zone is changed from CraftCMS general settings</span>
                     </p>                    
                 </div>   
@@ -519,10 +521,8 @@
 
         <div id="advanced" class="hidden">
 
-
             {{ forms.selectField({
-                label: 'Choose your website timezone to sync your chat widget time range.'|t('chat-widget'),
-                instructions: 'Please choose how much time you would like to wait before showing the chat widget.',
+                label: 'Please choose how much time you would like to wait before showing the chat widget.'|t('chat-widget'),
                 name: 'settings[delayPlugin]',
                 options: {
                     400: 'Instant',

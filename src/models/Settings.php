@@ -65,6 +65,8 @@ class Settings extends Model
     public $activeDay0 = true;
     public $fileAgentPhotoChat = [0];
     public $fileChatIcon = [0];
+    public $urlAgentPhotoChat = '';
+    public $urlIconChat = '';
     public $txtAreaCustomCSS = '
     .brix-plugins__chat-widget_message {
         background: #FE742A;
@@ -134,6 +136,10 @@ class Settings extends Model
             ['activeDay0', 'default', 'value' => false ],
             ['txtAreaCustomCSS', 'string'],
             ['txtAreaCustomCSS', 'default', 'value' => '' ],
+            ['urlAgentPhotoChat', 'string'],
+            ['urlAgentPhotoChat', 'default', 'value' => '' ],
+            ['urlIconChat', 'string'],
+            ['urlIconChat', 'default', 'value' => '' ],
             ['enableOnMobile', 'boolean'],
             ['enableOnMobile', 'default', 'value' => false ],
             ['fileChatIcon', 'default', 'value' => [] ],
